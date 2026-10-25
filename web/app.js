@@ -22,7 +22,7 @@ let sb = null;
 const store = {
   mode: (SUPABASE_URL && SUPABASE_ANON_KEY && /^https:\/\/[a-z0-9-]+\.supabase\.co/.test(SUPABASE_URL)) ? 'supabase' : 'local',
   user: null, snapshot: null, _t: null, flushing: false, dirty: false,
-  async init(){ if(this.mode!=='supabase') return; const mod = await import('https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/+esm'); sb = mod.createClient(SUPABASE_URL, SUPABASE_ANON_KEY); },
+  async init(){ if(this.mode!=='supabase') return; const mod = await import('https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.117.3/+esm'); sb = mod.createClient(SUPABASE_URL, SUPABASE_ANON_KEY); },
   async getSession(){ if(this.mode!=='supabase') return {local:true}; const {data} = await sb.auth.getSession(); this.user = data.session?.user||null; return data.session; },
   onAuth(cb){ if(sb) sb.auth.onAuthStateChange((ev, session)=>{ this.user = session?.user||null; cb(ev, session); }); },
   async signIn(email, password){ const {error} = await sb.auth.signInWithPassword({email, password}); return error ? traduzErro(error) : null; },
