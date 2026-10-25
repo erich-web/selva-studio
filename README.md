@@ -6,6 +6,8 @@ Sistema de gestão da floricultura **SELVA** (por Kiara Gracie): catálogo com f
 - **Banco e login**: [Supabase](https://supabase.com) (Postgres + Auth), com dados sincronizados em tempo real entre aparelhos.
 - **Sem servidor próprio**: hospede o `web/` em qualquer host estático (Cloudflare Pages, Netlify, Vercel, nginx no Hetzner…).
 
+> **Em produção**: app em `https://erich-web.github.io/selva-studio/` · projeto Supabase `selva-studio` (organização SELVA, São Paulo, ref `ywgrbddwlwjrozoijbdc`) · publicação automática a cada push na `main`.
+
 Enquanto `web/config.js` estiver vazio, o app roda em **modo local** (dados só no navegador) — útil para testar antes de configurar o Supabase.
 
 ## 1. Criar o projeto no Supabase (10 min)
