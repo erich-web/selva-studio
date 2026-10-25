@@ -1,0 +1,71 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>SELVA Studio</title>
+<meta name="theme-color" content="#F5EFEA" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#1C1206" media="(prefers-color-scheme: dark)">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="SELVA">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:ital,wght@0,300;0,400;0,500;0,600;1,400&family=IM+Fell+DW+Pica:ital@0;1&family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,200,0,0&display=swap">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<div id="login" class="login" hidden><div class="login-card"><span class="logo" aria-label="SELVA"></span><span class="eyebrow">Studio · Sistema de gestão</span><div id="login-body"></div></div></div>
+<div class="app" hidden>
+  <aside class="sidebar">
+    <div class="brand">
+      <a href="#inicio" class="logo" aria-label="SELVA" data-action="nav" data-to="inicio"></a>
+      <span class="eyebrow">Studio · Sistema de gestão</span>
+    </div>
+    <nav><ul class="nav" id="nav">
+      <li><a href="#inicio" data-action="nav" data-to="inicio"><span class="ms">home</span>Início</a></li>
+      <li><a href="#catalogo" data-action="nav" data-to="catalogo"><span class="ms">local_florist</span>Catálogo</a></li>
+      <li><a href="#clientes" data-action="nav" data-to="clientes"><span class="ms">group</span>Clientes</a></li>
+      <li><a href="#pedidos" data-action="nav" data-to="pedidos"><span class="ms">receipt_long</span>Pedidos</a></li>
+      <li><a href="#financeiro" data-action="nav" data-to="financeiro"><span class="ms">account_balance</span>Financeiro</a></li>
+      <li class="sep eyebrow">Próximas fases</li>
+      <li><a href="#eventos" data-action="nav" data-to="eventos"><span class="ms">celebration</span>Eventos<span class="soon">em breve</span></a></li>
+      <li><a href="#assinaturas" data-action="nav" data-to="assinaturas"><span class="ms">autorenew</span>Assinaturas<span class="soon">em breve</span></a></li>
+      <li><a href="#whatsapp" data-action="nav" data-to="whatsapp"><span class="ms">chat</span>WhatsApp<span class="soon">em breve</span></a></li>
+      <li class="sep eyebrow"></li>
+      <li><a href="#config" data-action="nav" data-to="config"><span class="ms">tune</span>Configurações</a></li>
+    </ul></nav>
+    <div class="side-foot">
+      <span class="eyebrow">Selva por Kiara Gracie</span>
+      <span class="eyebrow">Dr. Melo Alves 287 · Jardins</span>
+      <span class="eyebrow" id="sync" data-state="ok"></span>
+    </div>
+  </aside>
+  <div class="main">
+    <header class="topbar">
+      <a href="#inicio" class="logo" aria-label="SELVA" data-action="nav" data-to="inicio"></a>
+      <div class="actions">
+        <a href="#config" class="icon-btn" data-action="nav" data-to="config" aria-label="Configurações"><span class="ms">tune</span></a>
+      </div>
+    </header>
+    <main class="page" id="view" aria-live="polite"></main>
+  </div>
+</div>
+<nav class="tabbar" id="tabbar" hidden>
+  <a href="#inicio" data-action="nav" data-to="inicio"><span class="ms">home</span>Início</a>
+  <a href="#catalogo" data-action="nav" data-to="catalogo"><span class="ms">local_florist</span>Catálogo</a>
+  <a href="#pedidos" data-action="nav" data-to="pedidos"><span class="ms">receipt_long</span>Pedidos</a>
+  <a href="#clientes" data-action="nav" data-to="clientes"><span class="ms">group</span>Clientes</a>
+  <a href="#financeiro" data-action="nav" data-to="financeiro"><span class="ms">account_balance</span>Caixa</a>
+</nav>
+<div class="drawer-wrap" id="drawer-wrap" role="dialog" aria-modal="true">
+  <div class="scrim" data-action="close-drawer"></div>
+  <div class="drawer">
+    <div class="drawer-head"><div><span class="eyebrow" id="drawer-eyebrow"></span><h2 id="drawer-title"></h2></div><button class="icon-btn" data-action="close-drawer" aria-label="Fechar"><span class="ms">close</span></button></div>
+    <div class="drawer-body" id="drawer-body"></div>
+    <div class="drawer-foot" id="drawer-foot"></div>
+  </div>
+</div>
+<div class="dialog-wrap" id="dialog-wrap"><div class="scrim" data-action="dialog-cancel"></div><div class="dialog"><h3 id="dialog-title"></h3><p id="dialog-text" class="muted" style="margin:0"></p><div class="actions"><button class="btn btn-ghost" data-action="dialog-cancel">Cancelar</button><button class="btn btn-primary" id="dialog-ok" data-action="dialog-ok">Confirmar</button></div></div></div>
+<div class="toast" id="toast" role="status"></div>
+<script type="module" src="app.js"></script>
+</body>
+</html>
