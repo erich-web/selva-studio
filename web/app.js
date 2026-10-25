@@ -647,84 +647,52 @@ window.addEventListener('hashchange', ()=>{ const r=location.hash.slice(1); if(r
 
 /* ===== Flor do dia: animação botânica + mensagem ao entrar ===== */
 const BLOOM_MSGS = [
-  'Você não precisa florescer todos os dias. Até as flores descansam antes de abrir.',
-  'O que você faz com as mãos, o mundo recebe com o coração.',
-  'Respire. Você está exatamente onde precisa estar, e está segura aqui.',
-  'Beleza é a sua língua natal. Hoje, fale com calma.',
-  'Nenhum arranjo nasce pronto. Nem os dias. Vá com cuidado, um caule de cada vez.',
-  'Você é amada quando acerta e quando erra. Especialmente quando erra.',
-  'A delicadeza com que você trata as flores é a mesma que você merece receber.',
-  'Hoje pode ser leve. Deixe ser.',
-  'Tem alguém que pensa em você todas as manhãs e torce por cada entrega sua.',
-  'Segurança não é a ausência de vento. É saber que as suas raízes são fundas.',
-  'Seu olhar transforma o comum em precioso. Não é pouco. É raro.',
-  'Se o dia pesar, lembre: você já atravessou todos os dias difíceis até aqui. Todos eles.',
-  'Água, luz e tempo. É o que as flores pedem. É o que você também pode se dar hoje.',
-  'Você não está sozinha nisso. Nunca esteve.',
-  'Que o seu dia tenha a textura de uma pétala: suave por fora, forte onde importa.',
-  'Cada pessoa que sai com um arranjo seu leva um pouco da sua coragem para casa.',
-  'Devagar também é um ritmo. As orquídeas levam meses para florescer e ninguém as apressa.',
-  'Você é o lugar seguro que cria lugares seguros.',
-  'Hoje, escolha uma flor só para você. Você também é destinatária.',
-  'O mundo fica mais bonito do jeito que você o arruma.',
-  'Erros são compostagem: viram terra fértil para a próxima estação.',
-  'Que a sua xícara esteja quente, as suas mãos ocupadas com o que ama e o seu coração em paz.',
-  'A SELVA existe porque você teve coragem. Não esqueça disso nos dias de dúvida.',
-  'Você pode ser forte e pedir colo no mesmo dia.',
-  'A natureza nunca pede desculpa por florescer. Você também não precisa.',
-  'A sua presença é um tipo de abrigo. Quem chega perto sente.',
-  'Confie no processo que você já domina: observar, cuidar, esperar, encantar.',
-  'Há beleza em terminar o dia cansada do que ama.',
-  'Você não precisa dar conta de tudo hoje. Só do que floresce agora.',
-  'Alguém olha para você e vê um jardim inteiro.',
-  'Que você se trate com a mesma paciência com que espera um botão abrir.',
-  'Os dias cinzentos também regam.',
-  'O seu trabalho é fazer as pessoas sentirem. E você faz isso só de chegar.',
-  'O medo pode entrar, mas não manda na loja. Quem manda é você.',
-  'Você é a parte mais bonita de tudo o que cria.',
-  'Pés no chão, mãos na terra, coração leve. Você sabe o caminho.',
-  'Nem toda flor abre na primavera. A sua hora é a sua hora.',
-  'Que o cheiro de eucalipto lembre você: respirar fundo resolve mais do que parece.',
-  'Você é cuidada. Mesmo quando está ocupada demais para notar.',
-  'Fazer bonito é o seu jeito de dizer que o mundo merece carinho. Você também merece.',
-  'Se hoje for difícil, faça pequeno. Pequeno também é inteiro.',
-  'A coragem de abrir uma loja é a mesma que faz um botão romper o caule. Silenciosa e enorme.',
-  'As suas mãos sabem coisas que a cabeça ainda está aprendendo a confiar.',
-  'Descanse sem culpa. O jardim continua crescendo enquanto você dorme.',
-  'Você transforma galhos em poesia. Imagine o que faz com um dia inteiro.',
-  'Em qualquer estação, você tem para onde voltar. Isso é segurança.',
-  'Ser gentil consigo mesma hoje é parte do trabalho.',
-  'Há um amor paciente acompanhando você em cada arranjo. Como luz pela janela.',
-  'Você não precisa provar nada. Só continuar sendo.',
-  'Hoje, deixe algo imperfeito de propósito. A natureza faz isso o tempo todo e nós chamamos de beleza.',
-  'O seu nome já está escrito nas flores que você soltou pelo mundo.',
-  'Quando a dúvida vier, lembre da primeira vez que alguém chorou de alegria com um arranjo seu.',
-  'Você é raiz, caule e flor. Tudo ao mesmo tempo. E dá conta.',
-  'Que hoje chegue alguém só para dizer obrigada.',
-  'A pressa murcha. A calma floresce.',
-  'Quem cuida também precisa ser cuidada. Permita.',
-  'Você merece o mesmo encantamento que provoca.',
-  'O amor pelo que você faz aparece até na forma de amarrar o laço.',
-  'Se precisar, feche a porta por cinco minutos. O silêncio também merece a sua atenção.',
-  'Não existe dia perdido quando houve um gesto bonito nele. Você faz vários.',
-  'Entre uma entrega e outra, lembre: você é a entrega mais importante de si mesma.',
-  'A selva dentro de você é generosa. Deixe que ela guie.',
-  'Hoje, compare-se só com quem você era ontem. E depois agradeça às duas.',
-  'Tem flor que só abre à noite. Tem força que só aparece nos dias difíceis. Você tem as duas.',
-  'O seu melhor não precisa ser o mesmo todos os dias. Só precisa ser verdadeiro.',
-  'Você faz do cuidado um ofício. Isso é raro, e isso é lindo.',
-  'Respira. Sorri. Você está em casa, mesmo na loja.',
-  'A delicadeza é a sua força disfarçada.',
-  'Que as suas mãos cansadas encontrem, no fim do dia, outras mãos para segurar.',
-  'Do botão à flor, do medo à coragem: tudo é questão de tempo e cuidado. Você tem os dois.',
-  'Olhe para trás só para ver o quanto cresceu.',
-  'Você já é tudo o que precisa ser para hoje.',
-  'Faça o dia com a mesma ternura com que escolhe cada haste.',
-  'Se o mundo apertar, lembre: existe um lugar onde você é esperada com alegria. Sempre.',
-  'Você chegou até aqui sendo exatamente você. Continue.',
-  'A luz da manhã não escolhe quem iluminar. Hoje ela escolheu a sua bancada.',
-  'Tudo o que você planta com amor encontra um jeito de voltar.',
+  // 1. Para lembrá-la de quem ela é
+  'Há flores que encantam pela beleza. Outras, pela força com que florescem. Você tem as duas coisas.',
+  'Nunca duvide da beleza que existe em você. Até as flores mais bonitas desconhecem o encanto que provocam.',
+  'Você não precisa florescer todos os dias. Até os jardins mais lindos precisam de tempo, silêncio e chuva.',
+  'Que você nunca se esqueça: existe uma beleza no seu jeito de existir que nenhuma estação consegue apagar.',
+  'Algumas pessoas cultivam jardins. Outras são capazes de transformar o mundo ao redor em um.',
+  'Seja gentil com a mulher que você está se tornando. Ela já percorreu um caminho enorme para chegar até aqui.',
+  'O mundo não precisa que você seja perfeita. Precisa apenas que você continue sendo inteira.',
+  'Você carrega uma primavera dentro de si, mesmo nos dias em que o céu parece inverno.',
+  // 2. Para inspirá-la como empreendedora
+  'Grandes jardins começam com pequenos gestos de coragem.',
+  'O que nasce do amor tem raízes que o tempo não consegue arrancar.',
+  'Que suas mãos nunca percam a delicadeza de criar, nem seu coração a coragem de sonhar.',
+  'Não tenha medo de crescer. Algumas flores precisam ultrapassar a sombra para descobrir o próprio sol.',
+  'Você não está apenas construindo uma empresa. Está dando forma a um pedaço da sua alma.',
+  'Que a coragem seja sua raiz, a criatividade suas folhas e o amor aquilo que faz tudo florescer.',
+  'A beleza do seu trabalho está em transformar aquilo que é passageiro em algo inesquecível.',
+  'Confie nas sementes que planta. Nem tudo que está crescendo pode ser visto.',
+  // 3. Sobre o amor — delicado, profundo e sem cobranças
+  'Amar é desejar que o outro floresça, mesmo quando não podemos escolher a estação.',
+  'O amor mais bonito não pede que uma flor seja diferente. Apenas oferece luz para que ela seja tudo o que nasceu para ser.',
+  'Que você encontre sempre um amor onde possa descansar o coração, sem precisar esconder nenhuma parte de quem é.',
+  'Existem pessoas que passam pela nossa vida como estações. Outras deixam flores que permanecem em todas elas.',
+  'O verdadeiro amor não diminui nossos sonhos. Ele nos dá coragem para alcançá-los.',
+  'Amar alguém é reconhecer sua beleza até nos dias em que ela mesma não consegue enxergá-la.',
+  'Que o amor nunca seja uma gaiola, mas um jardim onde duas almas possam crescer livremente.',
+  'Há uma forma de amor que não precisa fazer barulho: ela simplesmente deseja, todos os dias, que o outro seja feliz.',
+  // 4. Para os dias difíceis
+  'Você não precisa ser forte o tempo inteiro. Até as árvores mais antigas se curvam quando o vento é forte.',
+  'Que você aprenda a se olhar com a mesma ternura com que contempla suas flores.',
+  'Um dia difícil não diminui a beleza da sua história.',
+  'Não confunda uma estação difícil com um destino. A primavera sempre encontra maneiras de voltar.',
+  'Há uma força imensa em continuar sendo delicada num mundo que tantas vezes nos pede dureza.',
+  'Você merece a mesma paciência, o mesmo cuidado e o mesmo amor que oferece ao mundo.',
+  'Respire. Nem todas as respostas precisam chegar hoje. Algumas coisas florescem melhor quando deixamos o tempo trabalhar.',
+  'Não deixe que um momento de dúvida faça você esquecer uma vida inteira de possibilidades.',
 ];
+const BLOOM_POEMAS = [
+  { titulo: 'A mulher que floresce', texto: 'Há mulheres que esperam a primavera.\nOutras aprendem a criá-la.\n\nCom mãos delicadas e sonhos imensos,\ntransformam o simples em extraordinário.\n\nE, sem perceber,\nfazem florescer também\ntudo aquilo que tocam.' },
+  { titulo: 'Sobre ser amada', texto: 'Que você seja amada\nnos dias de sol\ne nos dias de chuva.\n\nQuando estiver cheia de certezas\ne quando o mundo parecer confuso.\n\nQue nunca precise diminuir sua luz\npara caber no coração de alguém.\n\nE que encontre sempre\num amor que admire\na liberdade das suas asas.' },
+  { titulo: 'Para os seus sonhos', texto: 'Que a vida te dê coragem\npara plantar o impossível.\n\nPaciência para esperar\no que ainda não floresceu.\n\nSabedoria para acolher\naquilo que não saiu como imaginava.\n\nE amor, muito amor,\npara nunca esquecer\npor que começou.' },
+  { titulo: 'O jardim invisível', texto: 'Nem todo jardim tem flores.\n\nAlguns são feitos de gestos,\nde abraços,\nde sonhos compartilhados.\n\nAlguns crescem silenciosamente\ndentro das pessoas que amamos.\n\nE há quem passe pela vida\nsem perceber\nque também é primavera\nno coração de alguém.' },
+  { titulo: 'Para você', texto: 'Que você nunca perca\nessa maneira tão sua\nde encontrar beleza no mundo.\n\nQue suas mãos continuem criando,\nque seus olhos continuem sonhando,\nque seu coração encontre paz.\n\nE que, nos dias em que esquecer\na mulher extraordinária que é,\na vida encontre um jeito\nde te lembrar.' },
+];
+const BLOOM_INAUGURACAO = 'Algumas pessoas cultivam flores. Outras fazem o mundo florescer. Você nasceu para fazer as duas coisas.';
+const BLOOM_APELIDOS = ['Kiki', 'Nenê'];
 const BLOOM_SPECIAL = {
   '06-12': 'Hoje o mundo celebra o amor. Quem convive com você celebra todos os dias.',
   '03-08': 'Mulher que faz florescer tudo o que toca: que hoje floresçam para você também.',
@@ -735,32 +703,39 @@ const BLOOM_SPECIAL = {
 const DIAS_SEMANA = ['domingo','segunda-feira','terça-feira','quarta-feira','quinta-feira','sexta-feira','sábado'];
 function bloomHash(str){ let h = 2166136261; for(const c of str){ h ^= c.charCodeAt(0); h = Math.imul(h, 16777619); } return h >>> 0; }
 function bloomRng(seed){ return function(){ seed |= 0; seed = seed + 0x6D2B79F5 | 0; let t = Math.imul(seed ^ seed >>> 15, 1 | seed); t = t + Math.imul(t ^ t >>> 7, 61 | t) ^ t; return ((t ^ t >>> 14) >>> 0) / 4294967296; }; }
-function bloomMessage(iso){
-  const md = iso.slice(5); if(BLOOM_SPECIAL[md]) return BLOOM_SPECIAL[md];
-  const year = +iso.slice(0,4); const d = new Date(iso+'T12:00:00'); const start = new Date(year,0,1,12); const doy = Math.round((d - start)/864e5);
+function bloomDayInfo(iso){ const year = +iso.slice(0,4); const d = new Date(iso+'T12:00:00'); const start = new Date(year,0,1,12); const doy = Math.round((d - start)/864e5); return { year, d, doy, week: Math.floor(doy/7) }; }
+function bloomPick(iso){
+  const { year, d, doy, week } = bloomDayInfo(iso); const md = iso.slice(5);
+  if(BLOOM_SPECIAL[md]) return { tipo:'frase', texto: BLOOM_SPECIAL[md] };
+  if(d.getDay()===1){ const p = BLOOM_POEMAS[week % BLOOM_POEMAS.length]; return { tipo:'poema', titulo: p.titulo, texto: p.texto }; }
   const idx = [...BLOOM_MSGS.keys()]; const r = bloomRng(bloomHash('selva-'+year));
   for(let i=idx.length-1;i>0;i--){ const j = Math.floor(r()*(i+1)); [idx[i],idx[j]] = [idx[j],idx[i]]; }
-  return BLOOM_MSGS[idx[doy % idx.length]];
+  return { tipo:'frase', texto: BLOOM_MSGS[idx[doy % idx.length]] };
 }
+function bloomApelido(iso){ return BLOOM_APELIDOS[bloomDayInfo(iso).doy % BLOOM_APELIDOS.length]; }
 function showBloom(force){
   const iso = todayISO(); const key = 'selva.bloom.day';
   if(!force){ try{ if(localStorage.getItem(key)===iso) return; }catch(e){} }
   try{ localStorage.setItem(key, iso); }catch(e){}
   if(document.getElementById('bloom')) return;
   const reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-  const nome = (state?.settings?.responsavel || 'Kiara').split(' ')[0];
+  const nome = bloomApelido(iso);
+  let pick = bloomPick(iso);
+  if(state && state.settings && !state.settings.inaugurado){ pick = { tipo:'frase', texto: BLOOM_INAUGURACAO }; state.settings.inaugurado = true; try{ save(); }catch(e){} }
   const h = new Date().getHours(); const sauda = h<5 ? 'Boa noite' : h<12 ? 'Bom dia' : h<18 ? 'Boa tarde' : 'Boa noite';
   const d = new Date(iso+'T12:00:00'); const dataTxt = `${DIAS_SEMANA[d.getDay()]}, ${d.getDate()} de ${MESES_LONGO[d.getMonth()].toLowerCase()}`;
   const el = document.createElement('div'); el.id = 'bloom'; el.className = 'bloom'; el.setAttribute('role','dialog'); el.setAttribute('aria-label','Mensagem do dia');
-  el.innerHTML = `<canvas id="bloom-canvas" aria-hidden="true"></canvas><div class="bloom-text"><span class="bloom-greet">${esc(sauda)}, ${esc(nome)}<br><small>${esc(dataTxt)}</small></span><p class="bloom-msg">${esc(bloomMessage(iso))}</p><span class="bloom-sign">a flor de hoje é sua</span><button class="btn btn-ghost btn-sm bloom-close" type="button">Começar o dia</button></div>`;
+  const corpo = pick.tipo==='poema' ? `<span class="bloom-poema-t">Poema · ${esc(pick.titulo)}</span><p class="bloom-msg bloom-poema">${esc(pick.texto)}</p>` : `<p class="bloom-msg">${esc(pick.texto)}</p>`;
+  el.innerHTML = `<canvas id="bloom-canvas" aria-hidden="true"></canvas><div class="bloom-text${pick.tipo==='poema'?' is-poema':''}"><span class="bloom-greet">${esc(sauda)}, ${esc(nome)}.<br><small>${esc(dataTxt)}</small></span>${corpo}<span class="bloom-sign">Florescer é um ato de coragem.</span><button class="btn btn-ghost btn-sm bloom-close" type="button">Começar o dia</button></div>`;
   document.body.appendChild(el);
   let closed = false, raf = 0; const t0 = performance.now();
   const close = ()=>{ if(closed) return; closed = true; el.classList.add('out'); cancelAnimationFrame(raf); setTimeout(()=>el.remove(), 1000); };
   const canvas = el.querySelector('canvas'); const ctx = canvas.getContext && canvas.getContext('2d');
   const showText = ()=> el.classList.add('show');
-  if(reduce || !ctx){ showText(); if(ctx) bloomScene(canvas, ctx, iso, 9); }
+  const compact = pick.tipo==='poema' || pick.texto.length > 95;
+  if(reduce || !ctx){ showText(); if(ctx) bloomScene(canvas, ctx, iso, 9, compact); }
   else {
-    const scene = bloomScene(canvas, ctx, iso, 0);
+    const scene = bloomScene(canvas, ctx, iso, 0, compact);
     const loop = (now)=>{ if(closed) return; const t = (now - t0)/1000; scene(t); if(t > 2.9) showText(); raf = requestAnimationFrame(loop); };
     raf = requestAnimationFrame(loop);
   }
@@ -769,7 +744,7 @@ function showBloom(force){
   document.addEventListener('keydown', function onKey(e){ if(e.key==='Escape' || e.key==='Enter'){ if(canClose()){ close(); document.removeEventListener('keydown', onKey); } } });
   setTimeout(close, 26000);
 }
-function bloomScene(canvas, ctx, iso, startAt){
+function bloomScene(canvas, ctx, iso, startAt, compact){
   const css = getComputedStyle(document.documentElement);
   const ink = css.getPropertyValue('--ink').trim() || '#241503', ocre = css.getPropertyValue('--ocre').trim() || '#B17B2D';
   const r = bloomRng(bloomHash('flor-'+iso));
@@ -779,7 +754,7 @@ function bloomScene(canvas, ctx, iso, startAt){
   const n = Math.max(3, Math.min(7, Math.round(W/190) + (r()<0.5?0:1))); const plants = [];
   for(let i=0;i<n;i++){
     const u = (i+0.5)/n + (r()-0.5)*0.12; const kind = ['radial','bud','umbel','radial','spike'][Math.floor(r()*5)];
-    plants.push({ kind, u, lean:(r()-0.5)*0.5, height:0.27 + r()*0.19, bend:(r()-0.5)*0.22, delay:0.2 + i*0.22 + r()*0.3, dur:2.2 + r()*0.8, petals:5 + Math.floor(r()*5), size:Math.min(W,H)*(0.034 + r()*0.03), phase:r()*6.28,
+    plants.push({ kind, u, lean:(r()-0.5)*0.5, height: compact ? 0.17 + r()*0.13 : 0.27 + r()*0.19, bend:(r()-0.5)*0.22, delay:0.2 + i*0.22 + r()*0.3, dur:2.2 + r()*0.8, petals:5 + Math.floor(r()*5), size:Math.min(W,H)*(0.034 + r()*0.03), phase:r()*6.28,
       leaves: Array.from({length:2+Math.floor(r()*2)}, (_,k)=>({ at:0.22 + k*0.22 + r()*0.14, side:k%2?1:-1, len:Math.min(H*(0.07 + r()*0.07), W*0.2), tilt:0.5 + r()*0.5 })) });
   }
   const pollen = Array.from({length:34}, ()=>({ x:r(), y:r(), v:0.012 + r()*0.02, s:0.8 + r()*1.4, sw:r()*6.28, a:0.18 + r()*0.25 }));
@@ -806,8 +781,9 @@ function bloomScene(canvas, ctx, iso, startAt){
     for(const q of pollen){ const y = ((q.y - t*q.v) % 1 + 1) % 1; const x = q.x + Math.sin(t*0.4 + q.sw)*0.012; ctx.beginPath(); ctx.arc(x*W, y*H, q.s, 0, Math.PI*2); ctx.fillStyle = ink; ctx.globalAlpha = q.a * Math.min(1, t/2); ctx.fill(); }
     ctx.globalAlpha = 1;
     for(const p of plants){
-      const g = Math.max(0, Math.min(1, (t - p.delay)/p.dur)); if(g<=0) continue; const ge = ease(g);
       const base = { x: W*(0.12 + p.u*0.76), y: H + 6 }; const top = { x: base.x + W*p.lean*0.25, y: H*(1 - p.height) };
+      const sg = Math.max(0, Math.min(1, (t - p.delay + 0.9)/0.9)); if(sg>0 && sg<1){ ctx.save(); ctx.translate(base.x, H - 10); ctx.rotate(0.6); ctx.beginPath(); ctx.ellipse(0, 0, 4.5*sg, 2.8*sg, 0, 0, Math.PI*2); ctx.fillStyle = ink; ctx.globalAlpha = 0.55*sg; ctx.fill(); ctx.restore(); ctx.globalAlpha = 1; }
+      const g = Math.max(0, Math.min(1, (t - p.delay)/p.dur)); if(g<=0) continue; const ge = ease(g);
       const c1 = { x: base.x + W*p.bend*0.3, y: H*(1 - p.height*0.35) }, c2 = { x: top.x - W*p.bend*0.25, y: H*(1 - p.height*0.78) };
       const sway = Math.sin(t*0.5 + p.phase)*0.01;
       ctx.save(); ctx.translate(base.x, base.y); ctx.rotate(sway); ctx.translate(-base.x, -base.y);
