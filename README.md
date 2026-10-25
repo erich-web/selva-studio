@@ -35,14 +35,13 @@ python3 -m http.server 8080 --directory web
 # abra http://localhost:8080
 ```
 
-## 3. Publicar (Cloudflare Pages)
+## 3. Publicar
 
-1. Suba esta pasta para um repositório no GitHub.
-2. Cloudflare → **Workers & Pages → Create → Pages → Connect to Git** → escolha o repositório.
-3. *Build command*: deixe em branco. *Build output directory*: `web`.
-4. Deploy. Depois, em *Custom domains*, aponte um domínio (ex.: `studio.selvaporkiara.com`) e atualize a *Site URL* no Supabase.
+O repositório publica sozinho no **GitHub Pages** a cada push na `main` (workflow em `.github/workflows/pages.yml`, que envia a pasta `web/`). Em *Settings → Pages*, a fonte precisa estar como **GitHub Actions**. Endereço: `https://erich-web.github.io/selva-studio/`.
 
-Qualquer outro host estático funciona igual: basta servir a pasta `web/`.
+Para um domínio próprio (ex.: `studio.selvaporkiara.com`): em *Settings → Pages → Custom domain* informe o domínio, crie o CNAME no DNS apontando para `erich-web.github.io` e atualize a *Site URL* e as *Redirect URLs* no Supabase.
+
+Qualquer outro host estático funciona igual (Cloudflare Pages, Netlify, Vercel…): basta servir a pasta `web/`.
 
 No celular, abra o endereço e use “Adicionar à tela de início” — o app foi desenhado para telas pequenas (barra de abas inferior).
 
