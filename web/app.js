@@ -713,38 +713,58 @@ function bloomPick(iso){
   return { tipo:'frase', texto: BLOOM_MSGS[idx[doy % idx.length]] };
 }
 function bloomApelido(iso){ return BLOOM_APELIDOS[bloomDayInfo(iso).doy % BLOOM_APELIDOS.length]; }
-function showBloom(force){
-  const iso = todayISO(); const key = 'selva.bloom.day';
-  if(!force){ try{ if(localStorage.getItem(key)===iso) return; }catch(e){} }
-  try{ localStorage.setItem(key, iso); }catch(e){}
-  if(document.getElementById('bloom')) return;
-  const reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+let bloomLive = null, bloomPendingInaug = false;
+function bloomChoose(){
+  const iso = todayISO(); let pick = bloomPick(iso); let inaug = false;
+  let seenLocal = false; try{ seenLocal = localStorage.getItem('selva.inaug')==='1'; }catch(e){}
+  if(state && state.settings){ inaug = !state.settings.inaugurado; } else { inaug = !seenLocal; }
+  if(inaug) pick = { tipo:'frase', texto: BLOOM_INAUGURACAO };
+  return { iso, pick, inaug };
+}
+function bloomCommitInaug(){
+  try{ localStorage.setItem('selva.inaug','1'); }catch(e){}
+  if(state && state.settings){ if(!state.settings.inaugurado){ state.settings.inaugurado = true; try{ save(); }catch(e){} } }
+  else bloomPendingInaug = true;
+}
+function bloomSync(){
+  if(bloomPendingInaug && state && state.settings){ bloomPendingInaug = false; if(!state.settings.inaugurado){ state.settings.inaugurado = true; try{ save(); }catch(e){} } }
+  if(!bloomLive || bloomLive.revealed) return;
+  const c = bloomChoose(); if(c.pick.texto === bloomLive.pick.texto) return;
+  bloomLive.pick = c.pick; bloomLive.inaug = c.inaug; bloomLive.compact = c.pick.tipo==='poema' || c.pick.texto.length > 95;
+  const box = bloomLive.el.querySelector('.bloom-text'); if(box) box.innerHTML = bloomTextHtml(c.iso, c.pick);
+  bloomLive.el.querySelector('.bloom-text')?.classList.toggle('is-poema', c.pick.tipo==='poema');
+}
+function bloomTextHtml(iso, pick){
   const nome = bloomApelido(iso);
-  let pick = bloomPick(iso);
-  if(state && state.settings && !state.settings.inaugurado){ pick = { tipo:'frase', texto: BLOOM_INAUGURACAO }; state.settings.inaugurado = true; try{ save(); }catch(e){} }
   const h = new Date().getHours(); const sauda = h<5 ? 'Boa noite' : h<12 ? 'Bom dia' : h<18 ? 'Boa tarde' : 'Boa noite';
   const d = new Date(iso+'T12:00:00'); const dataTxt = `${DIAS_SEMANA[d.getDay()]}, ${d.getDate()} de ${MESES_LONGO[d.getMonth()].toLowerCase()}`;
-  const el = document.createElement('div'); el.id = 'bloom'; el.className = 'bloom'; el.setAttribute('role','dialog'); el.setAttribute('aria-label','Mensagem do dia');
   const corpo = pick.tipo==='poema' ? `<span class="bloom-poema-t">Poema · ${esc(pick.titulo)}</span><p class="bloom-msg bloom-poema">${esc(pick.texto)}</p>` : `<p class="bloom-msg">${esc(pick.texto)}</p>`;
-  el.innerHTML = `<canvas id="bloom-canvas" aria-hidden="true"></canvas><div class="bloom-text${pick.tipo==='poema'?' is-poema':''}"><span class="bloom-greet">${esc(sauda)}, ${esc(nome)}.<br><small>${esc(dataTxt)}</small></span>${corpo}<span class="bloom-sign">Florescer é um ato de coragem.</span><button class="btn btn-ghost btn-sm bloom-close" type="button">Começar o dia</button></div>`;
+  return `<span class="bloom-greet">${esc(sauda)}, ${esc(nome)}.<br><small>${esc(dataTxt)}</small></span>${corpo}<span class="bloom-sign">Florescer é um ato de coragem.</span><button class="btn btn-ghost btn-sm bloom-close" type="button">Começar o dia</button>`;
+}
+function showBloom(){
+  if(document.getElementById('bloom')) return;
+  const { iso, pick, inaug } = bloomChoose();
+  const reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const el = document.createElement('div'); el.id = 'bloom'; el.className = 'bloom'; el.setAttribute('role','dialog'); el.setAttribute('aria-label','Mensagem do dia');
+  el.innerHTML = `<canvas id="bloom-canvas" aria-hidden="true"></canvas><div class="bloom-text${pick.tipo==='poema'?' is-poema':''}">${bloomTextHtml(iso, pick)}</div>`;
   document.body.appendChild(el);
+  bloomLive = { el, pick, inaug, revealed:false, compact: pick.tipo==='poema' || pick.texto.length > 95 };
   let closed = false, raf = 0; const t0 = performance.now();
-  const close = ()=>{ if(closed) return; closed = true; el.classList.add('out'); cancelAnimationFrame(raf); setTimeout(()=>el.remove(), 1000); };
+  const close = ()=>{ if(closed) return; closed = true; el.classList.add('out'); cancelAnimationFrame(raf); setTimeout(()=>{ el.remove(); if(bloomLive && bloomLive.el===el) bloomLive = null; }, 1000); };
   const canvas = el.querySelector('canvas'); const ctx = canvas.getContext && canvas.getContext('2d');
-  const showText = ()=> el.classList.add('show');
-  const compact = pick.tipo==='poema' || pick.texto.length > 95;
-  if(reduce || !ctx){ showText(); if(ctx) bloomScene(canvas, ctx, iso, 9, compact); }
+  const showText = ()=>{ if(bloomLive && !bloomLive.revealed){ bloomLive.revealed = true; if(bloomLive.inaug) bloomCommitInaug(); } el.classList.add('show'); };
+  if(reduce || !ctx){ showText(); if(ctx) bloomScene(canvas, ctx, iso, 9); }
   else {
-    const scene = bloomScene(canvas, ctx, iso, 0, compact);
+    const scene = bloomScene(canvas, ctx, iso, 0);
     const loop = (now)=>{ if(closed) return; const t = (now - t0)/1000; scene(t); if(t > 2.9) showText(); raf = requestAnimationFrame(loop); };
     raf = requestAnimationFrame(loop);
   }
-  const canClose = ()=> reduce || (performance.now() - t0) > 3200;
-  el.addEventListener('click', e=>{ if(e.target.closest('.bloom-close') || canClose()) close(); });
-  document.addEventListener('keydown', function onKey(e){ if(e.key==='Escape' || e.key==='Enter'){ if(canClose()){ close(); document.removeEventListener('keydown', onKey); } } });
+  const canClose = ()=> reduce || (performance.now() - t0) > 1200;
+  el.addEventListener('click', e=>{ if(e.target.closest('.bloom-close') || canClose()){ showText(); close(); } });
+  document.addEventListener('keydown', function onKey(e){ if(e.key==='Escape' || e.key==='Enter'){ if(canClose()){ showText(); close(); document.removeEventListener('keydown', onKey); } } });
   setTimeout(close, 26000);
 }
-function bloomScene(canvas, ctx, iso, startAt, compact){
+function bloomScene(canvas, ctx, iso, startAt){
   const css = getComputedStyle(document.documentElement);
   const ink = css.getPropertyValue('--ink').trim() || '#241503', ocre = css.getPropertyValue('--ocre').trim() || '#B17B2D';
   const r = bloomRng(bloomHash('flor-'+iso));
@@ -754,7 +774,7 @@ function bloomScene(canvas, ctx, iso, startAt, compact){
   const n = Math.max(3, Math.min(7, Math.round(W/190) + (r()<0.5?0:1))); const plants = [];
   for(let i=0;i<n;i++){
     const u = (i+0.5)/n + (r()-0.5)*0.12; const kind = ['radial','bud','umbel','radial','spike'][Math.floor(r()*5)];
-    plants.push({ kind, u, lean:(r()-0.5)*0.5, height: compact ? 0.17 + r()*0.13 : 0.27 + r()*0.19, bend:(r()-0.5)*0.22, delay:0.2 + i*0.22 + r()*0.3, dur:2.2 + r()*0.8, petals:5 + Math.floor(r()*5), size:Math.min(W,H)*(0.034 + r()*0.03), phase:r()*6.28,
+    plants.push({ kind, u, lean:(r()-0.5)*0.5, height:0.27 + r()*0.19, heightC:0.17 + r()*0.13, bend:(r()-0.5)*0.22, delay:0.2 + i*0.22 + r()*0.3, dur:2.2 + r()*0.8, petals:5 + Math.floor(r()*5), size:Math.min(W,H)*(0.034 + r()*0.03), phase:r()*6.28,
       leaves: Array.from({length:2+Math.floor(r()*2)}, (_,k)=>({ at:0.22 + k*0.22 + r()*0.14, side:k%2?1:-1, len:Math.min(H*(0.07 + r()*0.07), W*0.2), tilt:0.5 + r()*0.5 })) });
   }
   const pollen = Array.from({length:34}, ()=>({ x:r(), y:r(), v:0.012 + r()*0.02, s:0.8 + r()*1.4, sw:r()*6.28, a:0.18 + r()*0.25 }));
@@ -781,10 +801,10 @@ function bloomScene(canvas, ctx, iso, startAt, compact){
     for(const q of pollen){ const y = ((q.y - t*q.v) % 1 + 1) % 1; const x = q.x + Math.sin(t*0.4 + q.sw)*0.012; ctx.beginPath(); ctx.arc(x*W, y*H, q.s, 0, Math.PI*2); ctx.fillStyle = ink; ctx.globalAlpha = q.a * Math.min(1, t/2); ctx.fill(); }
     ctx.globalAlpha = 1;
     for(const p of plants){
-      const base = { x: W*(0.12 + p.u*0.76), y: H + 6 }; const top = { x: base.x + W*p.lean*0.25, y: H*(1 - p.height) };
+      const ph = (bloomLive && bloomLive.compact) ? p.heightC : p.height; const base = { x: W*(0.12 + p.u*0.76), y: H + 6 }; const top = { x: base.x + W*p.lean*0.25, y: H*(1 - ph) };
       const sg = Math.max(0, Math.min(1, (t - p.delay + 0.9)/0.9)); if(sg>0 && sg<1){ ctx.save(); ctx.translate(base.x, H - 10); ctx.rotate(0.6); ctx.beginPath(); ctx.ellipse(0, 0, 4.5*sg, 2.8*sg, 0, 0, Math.PI*2); ctx.fillStyle = ink; ctx.globalAlpha = 0.55*sg; ctx.fill(); ctx.restore(); ctx.globalAlpha = 1; }
       const g = Math.max(0, Math.min(1, (t - p.delay)/p.dur)); if(g<=0) continue; const ge = ease(g);
-      const c1 = { x: base.x + W*p.bend*0.3, y: H*(1 - p.height*0.35) }, c2 = { x: top.x - W*p.bend*0.25, y: H*(1 - p.height*0.78) };
+      const c1 = { x: base.x + W*p.bend*0.3, y: H*(1 - ph*0.35) }, c2 = { x: top.x - W*p.bend*0.25, y: H*(1 - ph*0.78) };
       const sway = Math.sin(t*0.5 + p.phase)*0.01;
       ctx.save(); ctx.translate(base.x, base.y); ctx.rotate(sway); ctx.translate(-base.x, -base.y);
       ctx.beginPath(); const steps = 60; for(let i=0;i<=steps*ge;i++){ const pt = bez(base,c1,c2,top,i/steps); i===0 ? ctx.moveTo(pt.x,pt.y) : ctx.lineTo(pt.x,pt.y); } ctx.globalAlpha = 0.9; ctx.stroke(); ctx.globalAlpha = 1;
@@ -813,10 +833,9 @@ async function boot(){
   $('#login').hidden=true; $('.app').hidden=false; $('#tabbar').hidden=false;
   try{ const data = await store.load(); state = data || emptyState(); }
   catch(e){ console.error(e); state = emptyState(); toast('Não consegui carregar os dados: '+e.message); }
-  migrate(); setSync(store.mode==='local' ? 'local' : 'ok');
+  migrate(); bloomSync(); setSync(store.mode==='local' ? 'local' : 'ok');
   const r = location.hash.slice(1); ui.route = ROUTES.includes(r) ? r : 'inicio';
   render(); store.subscribe(scheduleRefresh);
-  showBloom(false);
 }
 let refreshT = null;
 function scheduleRefresh(){
@@ -830,14 +849,15 @@ function scheduleRefresh(){
 document.addEventListener('submit', async e=>{
   const form = e.target.closest('form[data-form="login"],form[data-form="forgot"],form[data-form="recovery"]'); if(!form) return; e.preventDefault();
   const d = fd(form); const btn = form.querySelector('button[type=submit]'); btn.disabled = true;
-  if(form.dataset.form==='login'){ const err = await store.signIn(d.email.trim(), d.password); if(err){ btn.disabled=false; showLogin('login', err); return; } await boot(); showBloom(true); }
+  if(form.dataset.form==='login'){ const err = await store.signIn(d.email.trim(), d.password); if(err){ btn.disabled=false; showLogin('login', err); return; } await boot(); }
   else if(form.dataset.form==='forgot'){ const err = await store.resetPassword(d.email.trim()); btn.disabled=false; if(err) showLogin('forgot', err); else { toast('Link enviado. Confira sua caixa de entrada.'); showLogin('login'); } }
-  else { const err = await store.updatePassword(d.password); if(err){ btn.disabled=false; showLogin('recovery', err); return; } toast('Senha atualizada'); await boot(); showBloom(true); }
+  else { const err = await store.updatePassword(d.password); if(err){ btn.disabled=false; showLogin('recovery', err); return; } toast('Senha atualizada'); await boot(); }
 });
 window.addEventListener('online', ()=>{ if(store.mode==='supabase') setSync(store.dirty?'saving':'ok'); });
 window.addEventListener('offline', ()=>{ if(store.mode==='supabase') setSync('offline'); });
 async function start(){
   ui.month = monthKey(todayISO());
+  showBloom();
   try{ await store.init(); }catch(e){ console.error(e); $('#login').hidden=false; $('.app').hidden=true; $('#login-body').innerHTML = '<p class="err">Não consegui carregar o serviço de dados. Verifique a conexão e recarregue a página.</p>'; return; }
   if(store.mode==='supabase'){
     store.onAuth((ev)=>{ if(ev==='PASSWORD_RECOVERY') showLogin('recovery'); if(ev==='SIGNED_OUT') showLogin(); });
